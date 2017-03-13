@@ -10,12 +10,17 @@ async function loadPage(url) {
 
     driver.get(url);
     
-    const button = await driver.wait(until.elementLocated(By.id(CART_BUTTON_ID)), 10000);
-    const isEnabled = await button.isEnabled();
+    // try {
+    //     const button = await driver.wait(until.elementLocated(By.id(CART_BUTTON_ID)), 10000);
+    //     const isEnabled = await button.isEnabled();
+    //     console.log('before', await driver.getCurrentUrl());
+    //     await button.click();
+    //     console.log('before', await driver.getCurrentUrl());
+    // } catch (error) {
+    //     console.error('OH NO', error);
+    // }
 
-    if (!isEnabled) {
-        driver.quit();
-    }
+    // driver.quit();
 }
 
 module.exports = { loadPage };
