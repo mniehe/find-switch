@@ -35,11 +35,11 @@ function checkZoolert(productURL) {
   jsdom.env(productURL, [], processPage);
 }
 
-// // Bind URL for the switch for now and call it for the initial time
+// Bind URL for the switch for now and call it for the initial time
 console.log('Starting zoolert checker');
 const zoolertSwitch = checkZoolert.bind(null, 'https://www.zoolert.com/ca/videogames/consoles/nintendo/switch/');
 zoolertSwitch();
 
-// // Check zoolert every thirty seconds
+// Check zoolert every thirty seconds
 const zoolertLoop = setInterval(zoolertSwitch, THIRTY_SECONDS);
 const bestBuyLook = setInterval(bestBuy.checkSwitch, THIRTY_SECONDS);

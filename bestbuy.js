@@ -15,6 +15,7 @@ function checkStock(sku, URL) {
 
     const data = JSON.parse(results[1]);
     if (data.availabilities[0].shipping.purchasable) {
+      console.log('Product through BestBuy API. Attempting purchase...');
       webDriver.loadPage(URL);
     }
   });
