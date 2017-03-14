@@ -1,6 +1,8 @@
 // Count all of the links from the io.js build page
 const jsdom = require("jsdom");
 const webDriver = require('./web-driver');
+const bestBuy = require('./bestbuy');
+const request = require('request');
 
 const SOLD_OUT_MESSAGE = 'Sold Out';
 const THIRTY_SECONDS = 30000;
@@ -33,10 +35,11 @@ function checkZoolert(productURL) {
   jsdom.env(productURL, [], processPage);
 }
 
-// Bind URL for the switch for now and call it for the initial time
+// // Bind URL for the switch for now and call it for the initial time
 console.log('Starting zoolert checker');
 const zoolertSwitch = checkZoolert.bind(null, 'https://www.zoolert.com/ca/videogames/consoles/nintendo/switch/');
 zoolertSwitch();
 
-// Check zoolert every thirty seconds
-const refresher = setInterval(zoolertSwitch, THIRTY_SECONDS);
+// // Check zoolert every thirty seconds
+const zoolertLoop = setInterval(zoolertSwitch, THIRTY_SECONDS);
+const bestBuyLook = setInterval(bestBuy.checkSwitch, THIRTY_SECONDS);
