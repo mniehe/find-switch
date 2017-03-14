@@ -16,7 +16,7 @@ function processPage(err, window) {
       const store = columns[0].textContent;
 
       // For testing
-      // if (store.match('Best') !== null) {
+      // if (store.match('Amazon') !== null) {
       //   webDriver.loadPage(url);
       //   break;
       // }
@@ -27,16 +27,14 @@ function processPage(err, window) {
       }
     }
   }
-
-  console.log('Still sold out...');
 }
 
 function checkZoolert(productURL) {
-  console.log('Loading zoolert page');
   jsdom.env(productURL, [], processPage);
 }
 
 // Bind URL for the switch for now and call it for the initial time
+console.log('Starting zoolert checker');
 const zoolertSwitch = checkZoolert.bind(null, 'https://www.zoolert.com/ca/videogames/consoles/nintendo/switch/');
 zoolertSwitch();
 
