@@ -1,6 +1,7 @@
-var webdriver = require('selenium-webdriver'),
-    By = webdriver.By,
-    until = webdriver.until;
+const config = require('./config');
+const webdriver = require('selenium-webdriver');
+const By = webdriver.By;
+const until = webdriver.until;
 
 const TEN_SECONDS = 10000;
 
@@ -47,11 +48,11 @@ async function handleBestBuy(driver) {
             
             await driver.wait(until.titleMatches(/Secure Checkout/), TEN_SECONDS);
 
-            const newCustomerRadio = await driver.wait(until.elementLocated(By.css('ul.guest-customers')), TEN_SECONDS);
-            await newCustomerRadio.click();
-
-            const finalButton = await driver.wait(until.elementLocated(By.css('a#ctl00_CP_UcCheckoutSignInUC_btnSubmitOrder')), TEN_SECONDS);
-            await finalButton.click();
+            if (config !== undefined) {
+                driver.findElement(By.css('input[type=email]')).sendKeys(config.bestBuy.email);
+                driver.findElement(By.css('input[type=password]')).sendKeys(config.bestBuy.password);
+                driver.findElement(By.css('a#ctl00_CP_UcCheckoutSignInUC_btnSubmitOrder')).click();
+            }
         }
 
     } catch (error) {

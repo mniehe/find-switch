@@ -1,10 +1,10 @@
 const request = require('request');
 const webDriver = require('./web-driver');
 
-const switchURL = 'http://api.bestbuy.ca/availability/products?callback=apiAvailability&accept-language=en&skus=10381161&accept=application%2Fvnd.bestbuy.standardproduct.v1%2Bjson&postalCode=M5G2C3&maxlos=3';
+const switchURL = 'http://api.bestbuy.ca/availability/products?callback=apiAvailability&accept-language=en&skus=10381161&accept=application%2Fvnd.bestbuy.standardproduct.v1%2Bjson&postalCode=V6B6G1&locations=705%7C242%7C952%7C13%7C212&maxlos=3';
 
 function checkStock(sku, URL) {
-  const availability = `http://api.bestbuy.ca/availability/products?callback=apiAvailability&accept-language=en&skus=${sku}&accept=application%2Fvnd.bestbuy.standardproduct.v1%2Bjson&postalCode=M5G2C3&maxlos=3`
+  const availability = `http://api.bestbuy.ca/availability/products?callback=apiAvailability&accept-language=en&skus=${sku}&accept=application%2Fvnd.bestbuy.standardproduct.v1%2Bjson&postalCode=V6B6G1&locations=705%7C242%7C952%7C13%7C212&maxlos=3`
   request(switchURL, (err, response, body) => {
     const results = body.match('apiAvailability\\((.*)\\);');
 
