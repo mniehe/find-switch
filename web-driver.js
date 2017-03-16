@@ -19,6 +19,9 @@ async function loadPage(url) {
     } else if (url.match('amazon') !== null) {
         console.log('Starting purchase process for Amazon');
         handleAmazon(driver);
+    } else if (url.match('walmart') !== null) {
+        console.log('Starting purchase process for Walmart');
+        handleWalmart(driver);
     } else {
         handleGeneric(driver);
     }
@@ -91,6 +94,32 @@ async function handleAmazon(driver) {
         driver.findElement(By.css('input#signInSubmit')).click();
     } catch (error) {
         console.log('Error with amazon purchase', error);
+    }
+}
+
+async function handleWalmart(driver) {
+    try {
+        const ADD_TO_CART_CSS = 'div#favourite-a2c-container button[type=submit]';
+        const LOGIN_BUTTON_CSS = '#checkout-step1-form button[type=submit]';
+        const HAVE_ACCOUNT_INPUT_CSS = '#checkout-step1-form input[type=radio][name=hasAccountChk][aria-labelledby=has-account-chk-false-label';
+        const CART_URL = 'https://www.walmart.ca/cart';
+
+        const addToCartButton = await driver.wait(until.elementLocated(By.css(ADD_TO_CART_CSS)), TEN_SECONDS);
+        await addToCartButton.click();
+        await driver.wait(pause(2000));
+
+        await driver.get(CART_URL);
+        const checkoutButton = await driver.wait(until.elementLocated(By.css('a#cart-aside-checkout-btn')), TEN_SECONDS);
+        await checkoutButton.click();
+
+        const hasAccountDial = await driver.wait(until.elementLocated(By.css(HAVE_ACCOUNT_INPUT_CSS)), TEN_SECONDS);
+        driver.actions().mouseMove(hasAccountDial).click().perform();
+
+        driver.findElement(By.css('input[type=email]')).sendKeys(config.walmart.email);
+        driver.findElement(By.css('input[type=password]')).sendKeys(config.walmart.password);
+        driver.findElement(By.css(LOGIN_BUTTON_CSS)).click();
+    } catch (error) {
+        console.log('Error with Walmart purchase', error);
     }
 }
 
