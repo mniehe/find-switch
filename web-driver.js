@@ -82,16 +82,20 @@ async function handleAmazon(driver) {
         await addToCartButton.click();
         await driver.wait(pause(100));
 
-        console.log('')
+        console.log('Added item to cart');
         
         await driver.get(CART_URL);
         const checkoutButton = await driver.wait(until.elementLocated(By.css('input[name=proceedToCheckout]')), TEN_SECONDS);
         await checkoutButton.click();
 
+        console.log('Starting checkout');
+
         await driver.wait(until.titleMatches(/Sign In/), TEN_SECONDS);
         driver.findElement(By.css('input[type=email]')).sendKeys(config.amazon.email);
         driver.findElement(By.css('input[type=password]')).sendKeys(config.amazon.password);
         driver.findElement(By.css('input#signInSubmit')).click();
+
+        console.log('Signin successful');
     } catch (error) {
         console.log('Error with amazon purchase', error);
     }
