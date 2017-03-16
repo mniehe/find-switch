@@ -10,10 +10,15 @@ async function loadPage(url) {
         .forBrowser('chrome')
         .build();
 
+    console.log(`Loading url: ${url}`);
     driver.get(url);
 
     if (url.match('bestbuy') !== null) {
+        console.log('Starting purchase process for BestBuy');
         handleBestBuy(driver);
+    } else if (url.match('amazon') !== null) {
+        console.log('Starting purchase process for Amazon');
+        handleAmazon(driver);
     } else {
         handleGeneric(driver);
     }
@@ -62,6 +67,30 @@ async function handleBestBuy(driver) {
 
     if (shouldQuit) {
         driver.quit();
+    }
+}
+
+async function handleAmazon(driver) {
+    try {
+        const CART_URL = 'https://www.amazon.ca/gp/cart/view.html/ref=nav_cart';
+        const ADD_TO_CART_ID = 'add-to-cart-button';
+
+        const addToCartButton = await driver.wait(until.elementLocated(By.id('add-to-cart-button')), TEN_SECONDS);
+        await addToCartButton.click();
+        await driver.wait(pause(100));
+
+        console.log('')
+        
+        await driver.get(CART_URL);
+        const checkoutButton = await driver.wait(until.elementLocated(By.css('input[name=proceedToCheckout]')), TEN_SECONDS);
+        await checkoutButton.click();
+
+        await driver.wait(until.titleMatches(/Sign In/), TEN_SECONDS);
+        driver.findElement(By.css('input[type=email]')).sendKeys(config.amazon.email);
+        driver.findElement(By.css('input[type=password]')).sendKeys(config.amazon.password);
+        driver.findElement(By.css('input#signInSubmit')).click();
+    } catch (error) {
+        console.log('Error with amazon purchase', error);
     }
 }
 
